@@ -21,6 +21,64 @@ print("checking new daily covid form entries")
 print("\n")
 
 
+def get_school_lists(school_name):
+
+    # open up google sheet to see if new staff have been added
+    gc = pygsheets.authorize(outh_file="client_secret.json")
+    school_covid_lists = gc.open_by_key("1ZIisaL_CQkbblkh7Furrd9J_MIQMeViWLrewgJndIns")
+    swanton_list = school_covid_lists.worksheet_by_title(school_name)
+
+    # download all data from sheet as cell_matrix
+    cell_matrix = swanton_list.get_all_values(returnas="matrix")
+    # print(cell_matrix)
+
+    # gather 'keys' for new dict from 1st row in sheet
+    dict_key_list = [x for x in cell_matrix[0]]
+    # pprint(dict_key_list)
+    dict_key_list = [
+        "First Name",
+        "Last Name",
+        "Work Email",
+        "ID",
+    ]
+
+    # initialize dict for data
+    school_checklist = []
+
+    # put cell_matrix list of lists into a list of dictionaries
+    for row in cell_matrix:
+        if row[0] != "":
+            # create dict from list of lists
+            line_dict = dict(zip(dict_key_list, row))
+            # concatinate names into one lower string for comparison
+            first = line_dict["First Name"].lower()
+            last = line_dict["Last Name"].lower()
+            line_dict["Name"] = first + " " + last
+
+            # remove unneeded namee pairs
+            line_dict.pop("First Name")
+            line_dict.pop("Last Name")
+
+            # add boolean for list creation later
+            line_dict["filled"] = False
+
+            # build final list for checking against
+            school_checklist.append(line_dict)
+
+    # remove first line with headings as data
+    school_checklist.pop(0)
+
+    # print(swanton_checklist)
+    print(f"{school_name} list complete")
+
+    return school_checklist
+
+
+swanton_checklist = get_school_lists("Swanton")
+highgate_checklist = get_school_lists("HES")
+franklin_checklist = get_school_lists("FCS")
+
+
 # # test dict so I don't send everyone emails
 # recipients_dict = {
 #     "Central Office": "russell.gregory@mvsdschools.org",
@@ -47,6 +105,19 @@ recipients_dict = {
     "Franklin Central School": "alita.boomhower@mvsdschools.org",
     "Highgate Elementary": "Jennifer.Gagne@mvsdschools.org",
     "Swanton Elementary: Babcock Building": "Wendy.Culligan@mvsdschools.org",
+}
+
+# setup recipients emails by scchool for attendance
+att_emails_dict = {
+    "Central Office": "Pierrette.Bouchard@mvsdschools.org",
+    "Swanton": [
+        "Justina.Jennett@mvsdschools.org",
+        "dawn.tessier@mvsdschools.org",
+        "Mary.Ellis@mvsdschools.org",
+        "russell.gregory@mvsdschools.org",
+    ],
+    "Franklin": "kathy.ovitt@mvsdschools.org",
+    "Highgate": ["amber.LaFar@mvsdschools.org", "russell.gregory@mvsdschools.org",],
 }
 
 
@@ -161,9 +232,61 @@ def email_nurse(staff, recipients_dict):
                 yag.send(nurse_address, "Covid Form Alert", [contents, html])
 
 
+def email_att_list(
+    school_checklist, email_list, school, filled_names_set, filled_pins_set
+):
+
+    print("beginning swanton attendance check")
+    # begin constructing list of those that filled it in and those that didn't
+    for staff in school_checklist:
+
+        # if staff memember is in the swanton building check against swanton_checklist
+        if staff["Name"] in filled_names_set or staff["ID"] in filled_pins_set:
+            staff["filled"] = True
+
+    disclaimer = "This information is valid as of " + str(temp_timestamp) + "\n\n\n"
+    filled_it_out = "The Following folks filled out the form today\n----------------\n"
+    did_not_fill_it_out = (
+        "\n\n\nThe Following folks did not fill out the form today\n----------------\n"
+    )
+
+    for staff in swanton_checklist:
+        if staff["filled"] == True:
+            filled_it_out = filled_it_out + staff["Name"].title() + "\n"
+
+    for staff in swanton_checklist:
+        if staff["filled"] == False:
+            did_not_fill_it_out = did_not_fill_it_out + staff["Name"].title() + "\n"
+
+    # # test email information
+    # yag.send(
+    #     "russell.gregory@mvsdschools.org",
+    #     "COVID Daily Form Roll Call",
+    #     [disclaimer, filled_it_out, did_not_fill_it_out],
+    # )
+    yag.send(
+        email_list,
+        "COVID Daily Form Roll Call",
+        [disclaimer, filled_it_out, did_not_fill_it_out],
+    )
+
+    print(f"email sent for {school}")
+    return
+
+
 # check for new staff
 worksheet_data, initial_form_sheet = check_for_new_staff()
 
+# create sets of filled in info
+filled_names_set = set()
+filled_pins_set = set()
+
+for staff in worksheet_data:
+    # check if form was filled in today
+    if staff["Timestamp"].date() == datetime.datetime.today().date():
+        filled_names_set.add(staff["Name"].lower())
+        if staff["ID"]:
+            filled_pins_set.add(staff["ID"])
 
 # check for new staff
 if len(worksheet_data) == 0:
@@ -183,6 +306,30 @@ else:
         # mark new staff member as processed with X in column J
         mark_as_finished_cell = "J" + str(staff["row_number"])
         initial_form_sheet.update_value(mark_as_finished_cell, "X")
+
+    email_att_list(
+        swanton_checklist,
+        att_emails_dict["Swanton"],
+        "Swanton",
+        filled_names_set,
+        filled_pins_set,
+    )
+
+    email_att_list(
+        highgate_checklist,
+        att_emails_dict["Highgate"],
+        "Highgate",
+        filled_names_set,
+        filled_pins_set,
+    )
+
+    email_att_list(
+        franklin_checklist,
+        att_emails_dict["Franklin"],
+        "Franklin",
+        filled_names_set,
+        filled_pins_set,
+    )
 
 
 print("\n\nfinished")
