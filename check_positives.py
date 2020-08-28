@@ -5,7 +5,8 @@ from pprint import pprint
 import yagmail
 import credentials
 import datetime
-import maya
+
+# import maya
 
 # setup gmail link
 gmail_user = credentials.gmail_user
@@ -90,8 +91,8 @@ def check_for_new_staff():
                 # add count so I can add x to appropriate row later
                 line_dict["row_number"] = count + 1
 
-                # create timestap so I can tell if form filled today
-                line_dict["Timestamp"] = maya.parse(line_dict["Timestamp"]).datetime()
+                # # create timestap so I can tell if form filled today
+                # line_dict["Timestamp"] = maya.parse(line_dict["Timestamp"]).datetime()
 
                 # create final list of entered form data
                 worksheet_data.append(line_dict)
@@ -182,7 +183,9 @@ else:
 
         # mark new staff member as processed with X in column J
         mark_as_finished_cell = "J" + str(staff["row_number"])
-        initial_form_sheet.update_value(mark_as_finished_cell, "X")
-
+        try:
+            initial_form_sheet.update_value(mark_as_finished_cell, "X")
+        except:
+            print(f"X not marked for {staff['Name']}")
 
 print("\n\nfinished")
