@@ -81,27 +81,27 @@ central_checklist = get_school_lists("Central")
 franklin_checklist = get_school_lists("FCS")
 
 
-# setup recipients emails by scchool for attendance
-att_emails_dict = {
-    "Central": "russell.gregory@mvsdschools.org",
-    "Swanton": "russell.gregory@mvsdschools.org",
-    "Franklin": "russell.gregory@mvsdschools.org",
-    "Highgate": "russell.gregory@mvsdschools.org",
-}
-
-
 # # setup recipients emails by scchool for attendance
 # att_emails_dict = {
-#     "Central": "Pierrette.Bouchard@mvsdschools.org",
-#     "Swanton": [
-#         "Justina.Jennett@mvsdschools.org",
-#         "dawn.tessier@mvsdschools.org",
-#         "Mary.Ellis@mvsdschools.org",
-#         "russell.gregory@mvsdschools.org",
-#     ],
-#     "Franklin": "kathy.ovitt@mvsdschools.org",
-#     "Highgate": ["amber.LaFar@mvsdschools.org", "russell.gregory@mvsdschools.org",],
+#     "Central": "russell.gregory@mvsdschools.org",
+#     "Swanton": "russell.gregory@mvsdschools.org",
+#     "Franklin": "russell.gregory@mvsdschools.org",
+#     "Highgate": "russell.gregory@mvsdschools.org",
 # }
+
+
+# setup recipients emails by scchool for attendance
+att_emails_dict = {
+    "Central": "Pierrette.Bouchard@mvsdschools.org",
+    "Swanton": [
+        "Justina.Jennett@mvsdschools.org",
+        "dawn.tessier@mvsdschools.org",
+        "Mary.Ellis@mvsdschools.org",
+        "russell.gregory@mvsdschools.org",
+    ],
+    "Franklin": "kathy.ovitt@mvsdschools.org",
+    "Highgate": ["amber.LaFar@mvsdschools.org", "russell.gregory@mvsdschools.org",],
+}
 
 
 def check_for_roll_call():
