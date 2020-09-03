@@ -81,27 +81,27 @@ central_checklist = get_school_lists("Central")
 franklin_checklist = get_school_lists("FCS")
 
 
-# # setup recipients emails by scchool for attendance
-# att_emails_dict = {
-#     "Central": "russell.gregory@mvsdschools.org",
-#     "Swanton": "russell.gregory@mvsdschools.org",
-#     "Franklin": "russell.gregory@mvsdschools.org",
-#     "Highgate": "russell.gregory@mvsdschools.org",
-# }
-
-
 # setup recipients emails by scchool for attendance
 att_emails_dict = {
-    "Central": "Pierrette.Bouchard@mvsdschools.org",
-    "Swanton": [
-        "Justina.Jennett@mvsdschools.org",
-        "dawn.tessier@mvsdschools.org",
-        "Mary.Ellis@mvsdschools.org",
-        "russell.gregory@mvsdschools.org",
-    ],
-    "Franklin": "kathy.ovitt@mvsdschools.org",
-    "Highgate": ["amber.LaFar@mvsdschools.org", "russell.gregory@mvsdschools.org",],
+    "Central": "russell.gregory@mvsdschools.org",
+    "Swanton": "russell.gregory@mvsdschools.org",
+    "Franklin": "russell.gregory@mvsdschools.org",
+    "Highgate": "russell.gregory@mvsdschools.org",
 }
+
+
+# # setup recipients emails by scchool for attendance
+# att_emails_dict = {
+#     "Central": "Pierrette.Bouchard@mvsdschools.org",
+#     "Swanton": [
+#         "Justina.Jennett@mvsdschools.org",
+#         "dawn.tessier@mvsdschools.org",
+#         "Mary.Ellis@mvsdschools.org",
+#         "russell.gregory@mvsdschools.org",
+#     ],
+#     "Franklin": "kathy.ovitt@mvsdschools.org",
+#     "Highgate": ["amber.LaFar@mvsdschools.org", "russell.gregory@mvsdschools.org",],
+# }
 
 
 def check_for_roll_call():
@@ -146,7 +146,8 @@ def check_for_roll_call():
         if row[0] != "":
             # create dict from list of info
             line_dict = dict(zip(dict_key_list, row))
-
+            # strip out all extra spaces from name field
+            line_dict["Name"] = " ".join(line_dict["Name"].split())
             # create timestap so I can tell if form filled today
             # line_dict["Timestamp"] = maya.parse(line_dict["Timestamp"]).datetime()
             line_dict["Timestamp"] = datetime.datetime.strptime(
@@ -163,9 +164,15 @@ def check_for_roll_call():
             if staff["ID"]:
                 filled_pins_set.add(staff["ID"])
 
+    # sorted list of the set for debugging purposes
+    alpha_filled_names = sorted(filled_names_set)
+
+    # # for test purposses only
+    # print(alpha_filled_names)
+
     print("Check complete")
 
-    return filled_names_set, filled_pins_set
+    return filled_names_set, filled_pins_set, alpha_filled_names
 
 
 def email_att_list(
@@ -211,7 +218,7 @@ def email_att_list(
 
 
 # check for new staff
-filled_names_set, filled_pins_set = check_for_roll_call()
+filled_names_set, filled_pins_set, alpha_filled_names = check_for_roll_call()
 
 
 # check for new staff
