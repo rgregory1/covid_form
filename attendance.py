@@ -79,7 +79,7 @@ highgate_checklist = get_school_lists("HES")
 swanton_checklist = get_school_lists("Swanton")
 central_checklist = get_school_lists("Central")
 franklin_checklist = get_school_lists("FCS")
-
+mvu_checklist = get_school_lists("MVU")
 
 # # setup recipients emails by scchool for attendance
 # att_emails_dict = {
@@ -101,6 +101,7 @@ att_emails_dict = {
     ],
     "Franklin": "kathy.ovitt@mvsdschools.org",
     "Highgate": ["amber.LaFar@mvsdschools.org", "russell.gregory@mvsdschools.org",],
+    "MVU": ["Stephen.Messier@mvsdschools.org", "russell.gregory@mvsdschools.org",],
 }
 
 
@@ -230,6 +231,10 @@ else:
     # list contains items
     print("New response found\n")
     is_new_response = True
+
+    email_att_list(
+        mvu_checklist, att_emails_dict["MVU"], "MVU", filled_names_set, filled_pins_set,
+    )
 
     email_att_list(
         swanton_checklist,
