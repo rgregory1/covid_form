@@ -42,12 +42,16 @@ recipients_dict = {
     "Swanton Elementary: Central Building": [
         "Danielle.Loiselle@mvsdschools.org",
         "russell.gregory@mvsdschools.org",
+        "Wendy.Culligan@mvsdschools.org",
     ],
     "MVU": ["Alissa.Graves@mvsdschools.org", "Lynn.Billado@mvsdschools.org"],
     "MVU-Connect": ["Alissa.Graves@mvsdschools.org", "Lynn.Billado@mvsdschools.org"],
     "Franklin Central School": "alita.boomhower@mvsdschools.org",
     "Highgate Elementary": "Jennifer.Gagne@mvsdschools.org",
-    "Swanton Elementary: Babcock Building": "Wendy.Culligan@mvsdschools.org",
+    "Swanton Elementary: Babcock Building": [
+        "Wendy.Culligan@mvsdschools.org",
+        "Danielle.Loiselle@mvsdschools.org",
+    ],
 }
 
 
