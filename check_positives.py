@@ -20,6 +20,7 @@ print(str(temp_timestamp))
 print("\n")
 print("checking new daily covid form entries")
 print("\n")
+print("\n")
 
 
 # # test dict so I don't send everyone emails
