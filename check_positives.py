@@ -89,7 +89,7 @@ def check_for_new_staff():
     # put cell_matrix list of lists into a list of dictionaries
     for count, row in enumerate(cell_matrix):
         if row[0] != "":
-            if row[9] == "":
+            if row[10] == "":
                 # create dict from list of info
                 line_dict = dict(zip(dict_key_list, row))
 
