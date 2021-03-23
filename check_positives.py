@@ -187,7 +187,7 @@ else:
             email_nurse(staff, recipients_dict)
 
         # mark new staff member as processed with X in column J
-        mark_as_finished_cell = "J" + str(staff["row_number"])
+        mark_as_finished_cell = "K" + str(staff["row_number"])
         try:
             initial_form_sheet.update_value(mark_as_finished_cell, "X")
         except:
