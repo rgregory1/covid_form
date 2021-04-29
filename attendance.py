@@ -236,13 +236,13 @@ else:
         mvu_checklist, att_emails_dict["MVU"], "MVU", filled_names_set, filled_pins_set,
     )
 
-    email_att_list(
-        swanton_checklist,
-        att_emails_dict["Swanton"],
-        "Swanton",
-        filled_names_set,
-        filled_pins_set,
-    )
+    # email_att_list(
+    #     swanton_checklist,
+    #     att_emails_dict["Swanton"],
+    #     "Swanton",
+    #     filled_names_set,
+    #     filled_pins_set,
+    # )
 
     email_att_list(
         highgate_checklist,
