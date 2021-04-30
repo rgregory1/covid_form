@@ -232,9 +232,9 @@ else:
     print("New response found\n")
     is_new_response = True
 
-    email_att_list(
-        mvu_checklist, att_emails_dict["MVU"], "MVU", filled_names_set, filled_pins_set,
-    )
+    # email_att_list(
+    #     mvu_checklist, att_emails_dict["MVU"], "MVU", filled_names_set, filled_pins_set,
+    # )
 
     # email_att_list(
     #     swanton_checklist,
