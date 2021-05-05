@@ -244,13 +244,13 @@ else:
     #     filled_pins_set,
     # )
 
-    email_att_list(
-        highgate_checklist,
-        att_emails_dict["Highgate"],
-        "Highgate",
-        filled_names_set,
-        filled_pins_set,
-    )
+    # email_att_list(
+    #     highgate_checklist,
+    #     att_emails_dict["Highgate"],
+    #     "Highgate",
+    #     filled_names_set,
+    #     filled_pins_set,
+    # )
 
     email_att_list(
         franklin_checklist,
